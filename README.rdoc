@@ -1,0 +1,51 @@
+== Polymorphic associations sample
+
+0. New app
+
+    rails-api new poly-api --skip-sprockets
+
+1. Generate the models
+
+    rails g model client name company
+    rails g model organization name
+    rails g model person name position organization:references
+    rails g model contract details:text name client:references person:references
+    rails g model address street street_number zip_code state address_for addressable:references{polymorphic}
+ 
+    bundle exec rake db:migrate
+
+
+2. Add the relationships
+
+    class Organization < ActiveRecord::Base
+      has_many :people
+      has_many :addresses, as: :addressable
+    end
+
+    class Person < ActiveRecord::Base
+      belongs_to :organization
+      has_many :contracts
+      has_many :clients, through: :contracts
+      has_many :addresses, as: :addressable
+    end
+
+    class Address < ActiveRecord::Base
+      belongs_to :addressable, polymorphic: true
+    end
+
+
+3. Have fun in the console
+
+    p = Person.create(name: "Hugo", position: "CEO")
+    p.addresses.create(street: "Happy Street", street_number: "123", address_for: "Home")
+    p.addresses
+    o = Organization.create(name: "ABC")
+    o.addresses.create(street: "Corp Av", street_number: "123", address_for: "Office")
+    o.addresses
+
+
+=== License
+
+Released under the {MIT License}[https://opensource.org/licenses/MIT].
+
+
