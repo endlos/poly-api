@@ -49,3 +49,4 @@
 Released under the {MIT License}[https://opensource.org/licenses/MIT].
 
 
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/endlos/poly-api/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
